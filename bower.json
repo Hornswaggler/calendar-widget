@@ -1,0 +1,30 @@
+{
+  "name": "calendar-widget",
+  "version": "0.0.1",
+  "authors": [
+    "Jared Linde<JaredLinde@gmail.com>"
+  ],
+  "description": "A replacement for the standard SharePoint Calendar Web Part",
+  "main": "index.html",
+  "keywords": [
+    "SharePoint",
+    "Angular",
+    "Widget",
+    "Calendar"
+  ],
+  "license": "MIT",
+  "ignore": [
+    "**/.*",
+    "node_modules",
+    "bower_components",
+    "test",
+    "tests"
+  ],
+  "dependencies": {
+    "angular": "~1.4.2",
+    "bootstrap-css-only": "~3.3.4",
+    "jquery": "~2.1.4",
+    "animate.css": "~3.3.0",
+    "angular-bootstrap": "~0.13.0"
+  }
+}

@@ -1,0 +1,254 @@
+<!DOCTYPE HTML>
+<html>
+<head>
+
+	<!-- inject:css -->
+	<link rel="stylesheet" href="lib/animate.css">
+	<link rel="stylesheet" href="lib/bootstrap.css">
+	<!-- endinject -->
+
+	<!-- inject:js -->
+	<script src="lib/angular.js"></script>
+	<script src="lib/jquery.js"></script>
+	<script src="lib/ui-bootstrap-tpls.js"></script>
+	<!-- endinject -->
+	
+	<script type="text/javascript">
+		(function(){
+			"use strict";
+			
+			var ANIMATION_END='webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
+			
+			angular.module('CalendarWidget', ['ui.bootstrap'])
+			.config(function (datepickerConfig) {
+				datepickerConfig.showWeeks = false;
+				datepickerConfig.datepickerMode='month';
+				datepickerConfig.minMode='month';
+				datepickerConfig.maxMode='month';
+			})
+			
+			angular.module('CalendarWidget').controller("CalendarController", ['$scope', function($scope){
+				$scope.dt = new Date();
+				
+				$scope.dateOptions = {
+					'datepicker-mode'	: 'month',
+					'show-weeks'			: false
+				};
+			}]);
+			
+			$(function(){
+			
+				$("#showMenu").click(function(){
+					$("#menu")
+						.show()
+						.addClass('animated slideInRight')
+						.one(ANIMATION_END, function(){
+							$("#menu").removeClass('animated slideInRight');
+						});
+				});
+			
+				$("#hideMenu").click(function(){
+					$("#menu")
+						.addClass('animated slideOutRight')
+						.one(ANIMATION_END,function(){
+							$("#menu")
+								.hide()
+								.removeClass('animated slideOutRight');
+						});
+				});
+				
+				$(".calendarEntry").click(function(){
+					$("#overlay").show();
+					$("#info").show().addClass('animated zoomIn')
+						.one(ANIMATION_END, function(){
+							$("#info").removeClass('animated zoomIn');
+						});
+					
+				});
+				
+				$("#closeInfo").click(function(){
+					$("#overlay").hide();
+					$("#info").addClass('animated fadeOut')
+						.one(ANIMATION_END, function(){
+							$("#info").hide().removeClass('animated fadeOut');
+						});
+				});
+			
+			});
+		})();
+	</script>
+	
+	<style type="text/css">
+		body{
+			margin:0 !important;
+			padding:0 !important;
+			display:block !important;
+			background-color:#000000;
+			overflow-x: hidden;
+			height:100%;
+		}
+		
+		.calendarDay{
+			float:left;
+			width:14.28571428571429%;
+			height: 150px;
+			background-color:orange;
+			margin:0px !important;
+			padding:0px !important;
+			border-left:solid 1px;
+			margin-left:-1px;
+			border-top:solid 1px;
+			margin-top:-1px;
+		}
+		
+		.calendarHeader{
+			float:left;
+			width:100%;
+			background-color:#000000;
+			color:#FFFFFF;
+			width:14.28571428571429%;
+			height:25px;
+		}
+		
+		.calendarBorder{
+			position:relative;
+			top:0px;
+			border-left:solid 1px;
+			border-top:solid 1px;
+			width:100%;
+			height:100%;
+			z-index:50;
+		}
+		
+		.calendarEntry{
+			 position:relative; 
+			 height:25px;
+			 background-color:red;
+			 color:white;
+			 text-align:center;
+			 padding-top:3px;
+			 -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
+			-moz-box-sizing: border-box;    /* Firefox, other Gecko */
+			box-sizing: border-box;
+			transition: all .2s ease-in-out;
+			border-radius: 5px;
+		}
+		
+		.calendarEntry:hover{
+			transform: scale(1.1);
+			cursor:pointer;
+		}
+		
+		.glyphicon-button:hover{
+			color:red !important;
+			cursor:pointer !important;
+		}
+		
+		.overlay{
+		  position: absolute;
+		  top: 0;
+		  left: 0;
+		  width: 100%;
+		  height: 100%;
+		  z-index: 10;
+		  background-color: rgba(0,0,0,0.5); /*dim the background*/
+		}
+		
+	</style>
+
+</head>
+<body ng-app="CalendarWidget" ng-controller="CalendarController as vm">
+
+	<div id="overlay" style="display:none;" class="overlay"></div>
+	<div id="info" style="display:none;position:absolute;padding:10px;left:25%;right:25%;top:20%;background-color:white;height:400px;border-radius:5px;z-index:100;">
+		<span id="closeInfo" style="float:right;" class="glyphicon glyphicon-remove glyphicon-button"></span>
+		<div>Title: Joe Schmoe - OOO</div>
+		<div>Location: Abu Dhabi, UAE</div>
+		<div>Start Time: 6/26/2015 12:00 AM</div>
+		<div>End Time: 6/30/2015 11:59 PM</div>
+		<div>Description</div>
+		<br/>
+		<div>Category: OOO Time (PTO, Jury Duty, Conference, etc.)</div>
+		<div>All Day Event: Yes</div>
+		<div>Recurrence</div>
+		 <br/>
+		<div>Number of Ratings: 0</div>
+		<div>Contact Joe Schmoe</div>
+		<div>Content Type: Event</div>
+		<div>Created at 6/22/2015 12:32 PM by No presence information Joe Schmoe</div>
+		<div>Last modified at 6/22/2015 12:32 PM by No presence information Joe Schmoe</div>
+	</div>
+
+	<div id="menu" style="display:none;position:absolute; right:0px;top:0px;height:100%;color:#FFFFFF;background-color:#000000;z-index:100;	">
+		<span id="hideMenu" style="margin:5px;float:left;position:relative;color:white;" class="glyphicon glyphicon-remove glyphicon-button"></span>
+		<div style=",color:#ffffff;margin-top:25px;">
+			<datepicker ng-model="dt" datepicker-options="dateOptions" ></datepicker>
+		</div>
+	</div>
+	
+	<div style="width:100%;margin-top:5px;">&nbsp;
+		<span style="float:left;position:relative;color:white;" class="glyphicon glyphicon-menu-left glyphicon-button"></span>
+		<span style="float:left;position:relative;color:white;margin-left:10px;" class="glyphicon glyphicon-menu-right glyphicon-button"></span>
+		<span id="showMenu" style="float:right;position:relative;right:10px;color:white;" class="glyphicon glyphicon-menu-hamburger glyphicon-button"></span>
+		<span style="float:left;position:relative;color:white;margin-left:10px;">July 2015</span>
+	</div>
+	
+	<div class="calendarHeader">Sunday</div>
+	<div class="calendarHeader">Monday</div>
+	<div class="calendarHeader">Tuesday</div>
+	<div class="calendarHeader">Wednesday</div>
+	<div class="calendarHeader">Thursday</div>
+	<div class="calendarHeader">Friday</div>
+	<div class="calendarHeader">Saturday</div>
+	
+	
+	<div class="calendarDay">1
+		<div class="calendarEntry" style="width:196%; left:2%; top:0px;">
+			SOME STUFF!
+		</div>
+	</div>
+	<div class="calendarDay">2
+		<div class="calendarEntry" style="width:296%;top:28px; left:2%; ">
+			SOME OTHER STUFF!
+		</div>
+	</div>
+	<div class="calendarDay">3</div>
+	<div class="calendarDay">4
+		<div class="calendarEntry" style="width:396%;left:2%; top:56px;">
+			YET MORE STUFF!
+		</div>
+	</div>
+	<div class="calendarDay">5</div>
+	<div class="calendarDay">6</div>
+	<div class="calendarDay">7</div>
+	
+
+	<div class="calendarDay">8</div>
+	<div class="calendarDay">9</div>
+	<div class="calendarDay">10</div>
+	<div class="calendarDay">11</div>
+	<div class="calendarDay">12</div>
+	<div class="calendarDay">13</div>
+	<div class="calendarDay">14</div>
+	
+	
+	<div class="calendarDay">15</div>
+	<div class="calendarDay">16</div>
+	<div class="calendarDay">17</div>
+	<div class="calendarDay">18</div>
+	<div class="calendarDay">19</div>
+	<div class="calendarDay">20</div>
+	<div class="calendarDay">21</div>
+
+	<div class="calendarDay">23</div>
+	<div class="calendarDay">24</div>
+	<div class="calendarDay">25</div>
+	<div class="calendarDay">26</div>
+	<div class="calendarDay">27</div>
+	<div class="calendarDay">28</div>
+	
+	<div class="calendarDay">29</div>
+	<div class="calendarDay">30</div>
+
+</body>
+</html>
