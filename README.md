@@ -4,15 +4,36 @@ A generic, modular calendar widget being designed to replace the out of the box 
 
 ## Requirements
 
+-Visual Studio 2010 / 2012 or 2013 (Express version is acceptable)
+    -Required to rebuild the Browserify dependency
+    -https://www.visualstudio.com/en-us/visual-studio-homepage-vs.aspx
+
+-OS Package Manager (non-linux users...)
+    -on OSX install [home brew](http://brew.sh/) and type `brew install node`
+    -on Windows install [chocolatey](https://chocolatey.org/)
+
+-Python version 2.x (required to build node-gyp dependency)
+    -on OSX
+        - `brew install pyenv`
+	- `pyenv install 2.7.5`
+    -on Windows `choco install python2`
+        -set the Python env variable to the exe path
+
 - Install Node
-    - on OSX install [home brew](http://brew.sh/) and type `brew install node`
-    - on Windows install [chocolatey](https://chocolatey.org/)
-        - open command prompt as administrator
-            - type `choco install nodejs`
-            - type `choco install nodejs.install`
+    -on Windows `choco install nodejs`
     - On OSX you can alleviate the need to run as sudo by [following these instructions](http://jpapa.me/nomoresudo). I highly recommend this step on OSX
-- Open terminal
-- Type `npm install bower gulp`
+- Open terminal / cmd
+- Type `npm install -g bower gulp`
+
+##Quick Start
+```bash
+$ npm install    
+$ bower install
+$ gulp serve-dev
+```
+- note if using Visual studio > 2010 you must use one of the following swithces to ensure node-gyp is installed properly:
+        -2012 `npm install --msvs_version=2012`
+        -2013 `npm install --msvs_version=2013`
 
 ## Tasks
 
@@ -45,6 +66,3 @@ A generic, modular calendar widget being designed to replace the out of the box 
 - `gulp build-prod`
 
     Optimize all javascript, move to a build folder, and inject them into the new index.html
-
-
-
