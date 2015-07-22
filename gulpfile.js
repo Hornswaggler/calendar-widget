@@ -42,7 +42,7 @@ gulp.task('build-dev',['bower-copy'], function(){
  */
 function injectDev(){
      var sources =   $.eventStream.merge(
-            gulp.src(['./src/lib/**/*.js', './src/lib/**/*.css']), 
+            gulp.src(['./src/lib/**/*.js', './src/lib/**/*.css','./src/css/**/*.css']), 
             gulp.src(['./src/app/**/*.js']).pipe($.angularFilesort()));
 	
     return gulp.src('./src/index.html')
@@ -146,7 +146,8 @@ function serve(env){
 	
 	if(env.name === 'dev'){
 		gulp.watch([env.base+"/*.html"]).on("change", $.browserSync.reload);
-        gulp.watch([env.base+"/app/**/*.js"]).on("change", $.browserSync.reload);
+        gulp.watch([env.base+"/app/**/*.js",env.base+"/css/**/*.css"])
+            .on("change", function(){injectDev(); $.browserSync.reload();});
 	}
 	
 }
