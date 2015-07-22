@@ -4,7 +4,7 @@ var gulp = require('gulp');
 var config = require('./gulp.config')();
 
 var $ = require("gulp-load-plugins")({
-	pattern:['gulp-*','gulp.*', 'main-bower-files', 'browser-sync', 'del'],
+	pattern:['gulp-*','gulp.*', 'main-bower-files', 'browser-sync', 'del', 'event-stream'],
 	lazy:true
 });
 
@@ -32,29 +32,38 @@ gulp.task('serve-dev',['build-dev'],function(){
 /**
  * Build the dev environment
  */
-gulp.task('build-dev',['bower-dev'], function(){
-	
-	var sources = gulp.src(['./src/lib/*.js', './src/lib/*.css'],{read:false});
-	
-	return gulp.src('./src/index.html')
-		.pipe($.inject(sources, {ignorePath:['dev','src'], addRootSlash:false}))
-		.pipe(gulp.dest('./src'));
+gulp.task('build-dev',['bower-copy'], function(){
+    return injectDev();
 });
 
 /**
- *	Copies the dev bower dependencies for dependency injection
- * Note that the js / css dependencies are included
- * in the return statement placing the syncronous dependency on the last task executed
+ * Inject development dependencies
+ * Injects library dependencies first, then angular dependencies
  */
-gulp.task('bower-dev', ['bower-dev-fonts', 'bower-dev-js-css']);
+function injectDev(){
+     var sources =   $.eventStream.merge(
+            gulp.src(['./src/lib/**/*.js', './src/lib/**/*.css']), 
+            gulp.src(['./src/app/**/*.js']).pipe($.angularFilesort()));
+	
+    return gulp.src('./src/index.html')
+        .pipe($.inject(sources,{ignorePath:['dev','src'], addRootSlash:false}))
+		.pipe(gulp.dest('./src'));
+}
  
-gulp.task('bower-dev-fonts',function(){
+/**
+ *	Copies the dev bower dependencies from the bower_components dir for dependency injection
+ * Note that the js / css dependencies are included
+ * in the return statement placing the synchronous dependency on the last task executed
+ */
+gulp.task('bower-copy', ['bower-fonts', 'bower-js-css']);
+ 
+gulp.task('bower-fonts',function(){
 	return gulp.src($.mainBowerFiles())
 		.pipe($.filter(['*.eot','*.svg','*.ttf','*.woff','*.woff2']))
 		.pipe(gulp.dest('./src/fonts'));
 });
 
-gulp.task('bower-dev-js-css',function(){
+gulp.task('bower-js-css',function(){
 	return gulp.src($.mainBowerFiles())
 		.pipe($.filter(['*.js','*.css']))
 		.pipe(gulp.dest('./src/lib'));
@@ -63,7 +72,6 @@ gulp.task('bower-dev-js-css',function(){
 /**
  * serve the prod environment
  */
- 
  gulp.task('serve-prod',['build-prod'],function(){
 	serve(config.env.prod);
  });
@@ -71,47 +79,57 @@ gulp.task('bower-dev-js-css',function(){
 /**
  * Build the prod environment
  */
- gulp.task('build-prod',['clean-prod','bower-prod'], function(){
-		
-	var sources = gulp.src(['./dist/lib/*.js', './dist/lib/*.css'],{read:false});
-	
-	return gulp.src('./src/index.html')
-		.pipe($.inject(sources, {ignorePath:['dev','src','dist'], addRootSlash:false}))
-		.pipe(gulp.dest('./dist'));
+ gulp.task('build-prod',['clean-prod', 'copy-prod', 'minify-concat'], function(){
+     return injectProd();
 });
 
+/**
+ * Inject production dependencies
+ * Injects library dependencies first, then concatenates, injects and minifies angular dependencies
+ */
+function injectProd(){
+	var sources = gulp.src(['./dist/lib/**/*'],{read:false});
+	
+	return gulp.src('./src/index.html')
+		.pipe($.inject(sources, {ignorePath:['dist'], addRootSlash:false}))
+        .pipe($.minifyHtml())
+		.pipe(gulp.dest('./dist'));
+}
+
+/**
+ * cleans the dist dir
+ */
 gulp.task('clean-prod', function(){
 	console.log('Cleaning dist directory');
 	
 	return $.del(['dist/**/*']);
 });
 
+gulp.task('copy-prod',['bower-copy'], function(){
+    return gulp.src('./src/fonts/**/*')
+        .pipe(gulp.dest('./dist/fonts'));
+});
+
 /**
- *	Copies the prod bower dependencies for dependency injection
- * Note that the js / css dependencies are included
- * in the return statement placing the syncronous dependency on the last task executed
+ * Minify and concatenate all css and javascript resources
  */
-gulp.task('bower-prod',['bower-prod-fonts', 'bower-prod-css', 'bower-prod-js']);
- 
-gulp.task('bower-prod-fonts',function(){
-	return gulp.src($.mainBowerFiles())
-		.pipe($.filter(['*.eot','*.svg','*.ttf','*.woff','*.woff2']))
-		.pipe(gulp.dest('./dist/fonts'));
+gulp.task('minify-concat', ['minify-concat-js','minify-concat-css']);
+
+gulp.task('minify-concat-js',function(){
+    return $.eventStream.merge(
+            gulp.src('./src/lib/**/*.js'), 
+            gulp.src(['./src/app/**/*.js']).pipe($.angularFilesort()))
+        .pipe($.concat('app.js'))
+        .pipe($.ngAnnotate())
+        .pipe($.uglify())
+        .pipe(gulp.dest('./dist/lib'));       
 });
 
-gulp.task('bower-prod-css',function(){
-	return	gulp.src($.mainBowerFiles())
-		.pipe($.filter('*.css'))
-		.pipe($.concat('concat.css'))
-		.pipe(gulp.dest('./dist/lib'));
-});
-
-gulp.task('bower-prod-js',function(){
-	return	gulp.src($.mainBowerFiles())
-		.pipe($.filter('*.js'))
-		.pipe($.concat('concat.js'))
-		.pipe($.uglify())
-		.pipe(gulp.dest('./dist/lib'));
+gulp.task('minify-concat-css', function(){
+    return gulp.src('./src/lib/**/*.css')
+        .pipe($.concat('app.css'))
+        .pipe($.minifyCss())
+        .pipe(gulp.dest('./dist/lib'));
 });
 
 /**
@@ -127,7 +145,8 @@ function serve(env){
 	});
 	
 	if(env.name === 'dev'){
-		gulp.watch(env.base+"/*.html").on("change", $.browserSync.reload);
+		gulp.watch([env.base+"/*.html"]).on("change", $.browserSync.reload);
+        gulp.watch([env.base+"/app/**/*.js"]).on("change", $.browserSync.reload);
 	}
 	
 }
