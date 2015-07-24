@@ -15,6 +15,7 @@
 	<script src="app/app.js"></script>
 	<script src="app/services/sharePointService.js"></script>
 	<script src="app/services/dateOpsService.js"></script>
+	<script src="app/directives/calendarDirective.js"></script>
 	<script src="app/controllers/calendarController.js"></script>
 	<script src="app/controllers/bootstrapCalendarController.js"></script>
 	<!-- endinject -->
@@ -102,8 +103,10 @@
 		<span style="float:left;position:relative;color:white;margin-left:10px;">{{vm.getMonth()}} {{vm.currentDate.getFullYear()}}</span>
 	</div>
 	
-    <div ng-repeat="eachDay in vm.getDaysOfWeek()" class="calendarHeader">{{eachDay}}</div>
-    <div ng-repeat="eachDay in vm.calendarDays" class="calendarDay">{{eachDay.date}}</div>
+    <calendar></calendar>
+    
+    <!--div ng-repeat="eachDay in vm.getDaysOfWeek()" class="calendarHeader">{{eachDay}}</div>
+    <div ng-repeat="eachDay in vm.calendarDays" class="calendarDay">{{eachDay.date}}</div-->
     
 	<!--div class="calendarDay">1
 		<div class="calendarEntry" style="width:196%; left:2%; top:0px;">
