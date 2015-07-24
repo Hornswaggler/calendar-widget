@@ -3,17 +3,18 @@
 <head>
 
 	<!-- inject:css -->
-	<link rel="stylesheet" href="lib/animate.css">
-	<link rel="stylesheet" href="lib/bootstrap.css">
-	<link rel="stylesheet" href="css/main.css">
+	<link rel="stylesheet" href="lib/css/animate.css">
+	<link rel="stylesheet" href="lib/css/bootstrap.css">
+	<link rel="stylesheet" href="app/app.css">
 	<!-- endinject -->
     
 	<!-- inject:js -->
-	<script src="lib/angular.js"></script>
-	<script src="lib/jquery.js"></script>
-	<script src="lib/ui-bootstrap-tpls.js"></script>
+	<script src="lib/js/angular.js"></script>
+	<script src="lib/js/jquery.js"></script>
+	<script src="lib/js/ui-bootstrap-tpls.js"></script>
 	<script src="app/app.js"></script>
 	<script src="app/services/sharePointService.js"></script>
+	<script src="app/services/dateOpsService.js"></script>
 	<script src="app/controllers/calendarController.js"></script>
 	<script src="app/controllers/bootstrapCalendarController.js"></script>
 	<!-- endinject -->
@@ -95,15 +96,16 @@
 	</div>
 	
 	<div style="width:100%;margin-top:5px;">&nbsp;
-		<span style="float:left;position:relative;color:white;" class="glyphicon glyphicon-menu-left glyphicon-button"></span>
-		<span style="float:left;position:relative;color:white;margin-left:10px;" class="glyphicon glyphicon-menu-right glyphicon-button"></span>
+		<span ng-click="vm.goPrevious()" style="float:left;position:relative;color:white;" class="glyphicon glyphicon-menu-left glyphicon-button"></span>
+		<span ng-click="vm.goNext()" style="float:left;position:relative;color:white;margin-left:10px;" class="glyphicon glyphicon-menu-right glyphicon-button"></span>
 		<span id="showMenu" style="float:right;position:relative;right:10px;color:white;" class="glyphicon glyphicon-menu-hamburger glyphicon-button"></span>
-		<span style="float:left;position:relative;color:white;margin-left:10px;">July 2015</span>
+		<span style="float:left;position:relative;color:white;margin-left:10px;">{{vm.getMonth()}} {{vm.currentDate.getFullYear()}}</span>
 	</div>
 	
-    <div ng-repeat="eachDay in vm.daysOfWeek()" class="calendarHeader">{{eachDay}}</div>
-
-	<div class="calendarDay">1
+    <div ng-repeat="eachDay in vm.getDaysOfWeek()" class="calendarHeader">{{eachDay}}</div>
+    <div ng-repeat="eachDay in vm.calendarDays" class="calendarDay">{{eachDay.date}}</div>
+    
+	<!--div class="calendarDay">1
 		<div class="calendarEntry" style="width:196%; left:2%; top:0px;">
 			SOME STUFF!
 		</div>
@@ -149,7 +151,7 @@
 	<div class="calendarDay">28</div>
 	
 	<div class="calendarDay">29</div>
-	<div class="calendarDay">30</div>
+	<div class="calendarDay">30</div-->
 
 </body>
 </html>

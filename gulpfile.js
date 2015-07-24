@@ -42,7 +42,7 @@ gulp.task('build-dev',['bower-copy'], function(){
  */
 function injectDev(){
      var sources =   $.eventStream.merge(
-            gulp.src(['./src/lib/**/*.js', './src/lib/**/*.css','./src/css/**/*.css']), 
+            gulp.src(['./src/lib/**/*.js', './src/lib/**/*.css','./src/app/**/*.css']), 
             gulp.src(['./src/app/**/*.js']).pipe($.angularFilesort()));
 	
     return gulp.src('./src/index.html')
@@ -51,22 +51,35 @@ function injectDev(){
 }
  
 /**
+ * cleans the dev dir
+ */
+gulp.task('clean-dev', function(){
+	return $.del.sync(['./src/lib/**/*']);
+});
+ 
+/**
  *	Copies the dev bower dependencies from the bower_components dir for dependency injection
  * Note that the js / css dependencies are included
  * in the return statement placing the synchronous dependency on the last task executed
  */
-gulp.task('bower-copy', ['bower-fonts', 'bower-js-css']);
+gulp.task('bower-copy', ['clean-dev', 'bower-fonts', 'bower-css', 'bower-js']);
  
 gulp.task('bower-fonts',function(){
 	return gulp.src($.mainBowerFiles())
 		.pipe($.filter(['*.eot','*.svg','*.ttf','*.woff','*.woff2']))
-		.pipe(gulp.dest('./src/fonts'));
+		.pipe(gulp.dest('./src/lib/fonts'));
 });
 
-gulp.task('bower-js-css',function(){
+gulp.task('bower-js',function(){
 	return gulp.src($.mainBowerFiles())
-		.pipe($.filter(['*.js','*.css']))
-		.pipe(gulp.dest('./src/lib'));
+		.pipe($.filter(['*.js']))
+		.pipe(gulp.dest('./src/lib/js'));
+});
+
+gulp.task('bower-css',function(){
+	return gulp.src($.mainBowerFiles())
+		.pipe($.filter(['*.css']))
+		.pipe(gulp.dest('./src/lib/css'));
 });
 
 /**
@@ -77,6 +90,7 @@ gulp.task('bower-js-css',function(){
  });
 
 /**
+ * TODO: BUILD PROD IS BORKED... - fix so that it strips out dependent libs from the concat and ensure the structure is correct
  * Build the prod environment
  */
  gulp.task('build-prod',['clean-prod', 'copy-prod', 'minify-concat'], function(){
@@ -102,7 +116,7 @@ function injectProd(){
 gulp.task('clean-prod', function(){
 	console.log('Cleaning dist directory');
 	
-	return $.del(['dist/**/*']);
+	return $.del.sync(['dist/**/*']);
 });
 
 gulp.task('copy-prod',['bower-copy'], function(){
@@ -118,7 +132,8 @@ gulp.task('minify-concat', ['minify-concat-js','minify-concat-css']);
 gulp.task('minify-concat-js',function(){
     return $.eventStream.merge(
             gulp.src('./src/lib/**/*.js'), 
-            gulp.src(['./src/app/**/*.js']).pipe($.angularFilesort()))
+            gulp.src(['./src/app/**/*.js'])
+                .pipe($.angularFilesort()))
         .pipe($.concat('app.js'))
         .pipe($.ngAnnotate())
         .pipe($.uglify())
@@ -146,8 +161,7 @@ function serve(env){
 	
 	if(env.name === 'dev'){
 		gulp.watch([env.base+"/*.html"]).on("change", $.browserSync.reload);
-        gulp.watch([env.base+"/app/**/*.js",env.base+"/css/**/*.css"])
+        gulp.watch([env.base+"/app/**/*.js",env.base+"/app/**/*.css"])
             .on("change", function(){injectDev(); $.browserSync.reload();});
 	}
-	
 }

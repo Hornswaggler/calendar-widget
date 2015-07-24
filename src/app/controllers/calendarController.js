@@ -5,50 +5,52 @@
         .module('app')
         .controller('Calendar', Calendar);
 
-    Calendar.$inject = ['CONST','spService'];
+    Calendar.$inject = ['CONST','spService', 'dateOps'];
 
-    function Calendar(CONST, spService){
+    function Calendar(CONST, spService, dateOps){ 
         var vm = this;
 
+        vm.goNext = goNext; 
+        vm.goPrevious = goPrevious;
+        
+        vm.getDaysOfWeek = getDaysOfWeek;
+        vm.getMonth = getMonth;
+        
         vm.currentDate = new Date();
-        vm.daysOfWeek = daysOfWeek;
-        vm.daysForMonth = daysForMonth;
-
-        daysForMonth();
+        vm.calendarDays = [];
+        
+        activate();
         
         //////////
         
-        function daysForMonth(){
-            var year = vm.currentDate.getFullYear();
-            var month = vm.currentDate.getMonth();
-        
-            var firstOfMonth = new Date(year, month, 1);
-            firstOfMonth.setDate(firstOfMonth.getDate() - firstOfMonth.getDay())
-
-            var lastOfMonth = new Date(year, month+1, 0);
-            lastOfMonth.setDate(lastOfMonth.getDate() +  (6-lastOfMonth.getDay()));
-
-            var ret = [];
-            for(var i = new Date(firstOfMonth),j=0; i <= lastOfMonth; i.setDate(i.getDate()+1),j++){
-
-                var dayOfWeek = j%7;
-                if(dayOfWeek===0){
-                    ret.push([]);
-                }
-                
-                ret[ret.length-1].push(
-                    {
-                        dayOfWeek: CONST.DAYS_OF_WEEK[dayOfWeek],
-                        month: i.getMonth(),
-                        date: i.getDate()
-                    }
-                );
-            }
-            console.log(ret);
-            return ret;
+        function activate(){
+            getCalendarDays();
         }
         
-        function daysOfWeek(){
+        //TODO: This will go to the next month, week , day depeneding on calendar mode...
+        //Will probably have to seperate "CURRENT_DATE" from the concept of what
+        //Is currently being displayed on the screen
+        function goNext(){
+            vm.currentDate.setMonth(vm.currentDate.getMonth()+1);
+            getCalendarDays();
+        }
+        
+        function goPrevious(){
+            vm.currentDate.setMonth(vm.currentDate.getMonth()-1);
+            getCalendarDays();
+        }
+        
+        //TODO: Ultimately have this call different factory method(s) depending on view mode
+        function getCalendarDays(){
+            vm.calendarDays = dateOps.getDaysForMonth(vm.currentDate);
+            return vm.calendarDays;
+        }
+
+        function getMonth(){
+            return CONST.MONTHS[vm.currentDate.getMonth()];
+        }
+        
+        function getDaysOfWeek(){
             return CONST.DAYS_OF_WEEK;
         }
     }

@@ -1,6 +1,6 @@
 (function () {
     'use strict';   
-    
+    //TODO: Make this a factory instead of a "Service"
     angular
         .module('app')
         .service('spService', spService);
