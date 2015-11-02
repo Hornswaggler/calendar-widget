@@ -7,6 +7,25 @@ body{
     height:100% !important;
 }
 
+.menu{
+    height:100%;
+    color:#FFFFFF;
+    background-color:#000000;
+    z-index:100;
+    position:absolute;
+    
+    -webkit-transition:all linear 0.5s;
+    transition:all linear 0.5s;
+}
+
+.menu.ng-show{
+    opacity: 1;
+}
+
+.menu.ng-hide{
+    opacity: 0;
+}
+
 .calendarDay{
     float:left;
     width:14.28571428571429%;

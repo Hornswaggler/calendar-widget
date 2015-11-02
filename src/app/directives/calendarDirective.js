@@ -5,10 +5,13 @@
         .module('app')
         .directive('calendar', calendar);
     
-    function calendar(){
+    calendar.$inject = ['CONST'];
+
+    function calendar(CONST){
+
         var directive = {
             link : link,
-            templateUrl : './app/templates/calendar.html',
+            templateUrl : CONST.APP_ROOT + '/templates/calendar.html',
             restrict : 'EA'
         };
         return directive;

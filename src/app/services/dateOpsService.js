@@ -11,7 +11,7 @@
         var service = {
             getDaysForMonth : getDaysForMonth
         }
-    
+
         return service;
         
         //////////
@@ -27,13 +27,15 @@
             lastOfMonth.setDate(lastOfMonth.getDate() +  (6-lastOfMonth.getDay()));
 
             var ret = [];
-            for(var i = new Date(firstOfMonth),j=0; i <= lastOfMonth; i.setDate(i.getDate()+1),j++){
+            for(var eachDate = new Date(firstOfMonth),j=0; eachDate <= lastOfMonth; eachDate.setDate(eachDate.getDate()+1),j++){
                 ret.push(
                     {
+                        date: new Date(eachDate),
                         dayOfWeek: CONST.DAYS_OF_WEEK[j%7],
-                        month: i.getMonth(),
-                        date: i.getDate(),
-                        year: i.getFullYear()
+                        day: eachDate.getDate(),
+                        month: eachDate.getMonth(),
+                        year: eachDate.getFullYear(),
+                        events:[]
                     }
                 );
             }

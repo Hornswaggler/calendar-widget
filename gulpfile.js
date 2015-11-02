@@ -41,12 +41,37 @@ gulp.task('build-dev',['bower-copy'], function(){
  * Injects library dependencies first, then angular dependencies
  */
 function injectDev(){
-     var sources =   $.eventStream.merge(
-            gulp.src(['./src/lib/**/*.js', './src/lib/**/*.css','./src/app/**/*.css']), 
+
+    var sources =   $.eventStream.merge(
+            gulp.src(['./src/app/**/*.css']), 
+            gulp.src($.mainBowerFiles(), {read: false}),
             gulp.src(['./src/app/**/*.js']).pipe($.angularFilesort()));
 	
+    var regex = new RegExp( 'bower_components', 'gi' );
+    
     return gulp.src('./src/index.html')
-        .pipe($.inject(sources,{ignorePath:['dev','src'], addRootSlash:false}))
+    
+    
+
+        .pipe($.inject(
+            sources,
+            {
+                ignorePath:['dev','src'], 
+                addRootSlash:false,
+                transform: function(filePath, file){
+                    if(filePath.toLowerCase().indexOf("bower_components") !=-1){
+                        if(filePath.toLowerCase().indexOf(".js")!=-1){
+                            return '<script src="lib/js' + filePath.substring(filePath.lastIndexOf("/")) + '"></script>';
+                        }else if(filePath.toLowerCase().indexOf(".css")!=-1){
+                            return '<link rel="stylesheet" href="lib/css' + filePath.substring(filePath.lastIndexOf("/")) + '">';
+                        }
+                    }else{
+                        return $.inject.transform.apply($.inject.transform, arguments);
+                    }
+                }
+            }))
+
+
 		.pipe(gulp.dest('./src'));
 }
  
@@ -105,7 +130,9 @@ function injectProd(){
 	var sources = gulp.src(['./dist/lib/**/*'],{read:false});
 	
 	return gulp.src('./src/index.html')
+    
 		.pipe($.inject(sources, {ignorePath:['dist'], addRootSlash:false}))
+        
         .pipe($.minifyHtml())
 		.pipe(gulp.dest('./dist'));
 }
