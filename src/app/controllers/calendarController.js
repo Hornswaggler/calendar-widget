@@ -5,9 +5,9 @@
         .module('app')
         .controller('Calendar', Calendar);
 
-    Calendar.$inject = ['CONST','calendarService', 'dateOps'];
+    Calendar.$inject = ['$scope', 'CONST','calendarService', 'dateOps'];
 
-    function Calendar(CONST, calendarService, dateOps){ 
+    function Calendar($scope, CONST, calendarService, dateOps){ 
         var vm = this;
 
         vm.showMenu=false;
@@ -29,6 +29,10 @@
         //////////
         
         function activate(){
+            refresh();
+        }
+        
+        function refresh(){
             getCalendarDays();
             getEvents();
         }
@@ -38,12 +42,12 @@
         //Is currently being displayed on the screen
         function goNext(){
             vm.currentDate.setMonth(vm.currentDate.getMonth()+1);
-            getCalendarDays();
+            refresh();
         }
         
         function goPrevious(){
             vm.currentDate.setMonth(vm.currentDate.getMonth()-1);
-            getCalendarDays();
+            refresh();
         }
         
         function toggleMenu(){
@@ -73,7 +77,7 @@
             
             return vm.events;
         }
-
+        
         /** 
          * Merges Events with Calendar Days, splits events into amount of 
          * divs required to display in current view
@@ -94,17 +98,25 @@
                                 && eachEvent.endDate.getTime() >= eachCalendarDay.date.getTime()){//AND END DATE!!!!){
                             eachCalendarDay.events.push(eachEvent);
                         }
-                        if(i%7!=0 && eachEvent.startDate.getTime() === eachCalendarDay.date.getTime()){
+                        
+                        
+                        else if(eachEvent.startDate.getMonth() === eachCalendarDay.date.getMonth() 
+                                && eachEvent.startDate.getDate() === eachCalendarDay.date.getDate()
+                                && eachEvent.startDate.getUTCFullYear() === eachCalendarDay.date.getUTCFullYear()){
                             eachCalendarDay.events.push(eachEvent);
                         }
+
+                        /*if(i%7!=0 && eachEvent.startDate.getTime() === eachCalendarDay.date.getTime()){
+                            eachCalendarDay.events.push(eachEvent);
+                        }*/
+                        
                    // }else{
                         //Only ones w/ this specific start date
                    // }
                 }
             }
-            
-            var i = 0;
-            i++;
+
+            $scope.$broadcast(CONST.EVT_EVENTS_LOADED);
         }
         
         function getMonth(){

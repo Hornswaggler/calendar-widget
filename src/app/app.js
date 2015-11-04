@@ -5,7 +5,10 @@
         .constant("CONST",{
             APP_ROOT : scriptSource(),
             DAYS_OF_WEEK : ["Sunday", "Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday"],
-            MONTHS : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"]
+            MONTHS : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
+            
+            //EVENTS
+            EVT_EVENTS_LOADED : "EVT_EVENTS_LOADED"
         })
         .config(function (datepickerConfig) {
             //Configure ui-bootstrap calendar control

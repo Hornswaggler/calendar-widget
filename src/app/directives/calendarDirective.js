@@ -17,7 +17,9 @@
         return directive;
         
         function link(scope,element, attrs){
-            
+            scope.$on(CONST.EVT_EVENTS_LOADED, function(event, args){
+                   console.log("Inside calendar Directive");
+            });
         }
     }
  
