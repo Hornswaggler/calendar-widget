@@ -1,4 +1,4 @@
-#calendar-widget
+#Calendar-widget
 
 A generic, modular calendar widget being designed to replace the out of the box SharePoint calendar Web Part. While the initial implementation will be backed by a SharePoint list, it's being designed to be modular and use multiple datasources (If i ever have the time). I'm using this project to teach myself best practices (Angular / JavaScript etc...).
 
