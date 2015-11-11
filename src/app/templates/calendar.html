@@ -8,12 +8,12 @@
 <div style="width:100%;margin-top:5px;">&nbsp;
     <span ng-click="vm.goNext()" style="float:right;color:white;margin-right:10px;" class="glyphicon glyphicon-menu-right glyphicon-button"></span>
     <span ng-click="vm.goPrevious()" style="float:right;color:white;" class="glyphicon glyphicon-menu-left glyphicon-button"></span>
-    <span style="float:right;color:white;margin-right:10px;">{{vm.getMonth()}} {{vm.currentDate.getFullYear()}}</span>
+    <span style="float:right;color:white;margin-right:10px;">{{vm.calendar.currentMonth()}} {{vm.calendar.currentDate.getFullYear()}}</span>
     <span ng-click="vm.toggleMenu()" style="float:left;left:10px;color:white;" class="glyphicon glyphicon-menu-hamburger glyphicon-button"></span>
 </div>
-<div ng-repeat="eachDay in vm.getDaysOfWeek()" class="calendarHeader">{{eachDay}}</div>
+<div ng-repeat="eachDay in vm.daysOfWeek" class="calendarHeader">{{eachDay}}</div>
 
-<div ng-repeat="eachDay in vm.calendarDays" class="calendarDay">
+<div ng-repeat="eachDay in vm.calendar.calendarDays" class="calendarDay">
     {{eachDay.day}}
     
     <event day="eachDay"></event>

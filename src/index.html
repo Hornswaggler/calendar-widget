@@ -15,67 +15,17 @@
 	<script src="lib/js/jquery.js"></script>
 	<script src="lib/js/ui-bootstrap-tpls.js"></script>
 	<script src="app/app.js"></script>
-	<script src="app/services/standaloneCalendarService.js"></script>
-	<script src="app/services/dateOpsService.js"></script>
-	<script src="app/directives/eventDirective.js"></script>
-	<script src="app/directives/calendarDirective.js"></script>
-	<script src="app/controllers/calendarController.js"></script>
+	<script src="app/services/standaloneEvent.service.js"></script>
+	<script src="app/services/calendar.service.js"></script>
+	<script src="app/directives/calendarEvent.directive.js"></script>
+	<script src="app/directives/calendar.directive.js"></script>
+	<script src="app/controllers/calendar.controller.js"></script>
 	<script src="app/controllers/bootstrapCalendarController.js"></script>
 	<!-- endinject -->
-    
-	<script type="text/javascript">
-		/*(function(){
-			"use strict";
-			var ANIMATION_END='webkitAnimationEnd mozAnimationEnd MSAnimationEnd oanimationend animationend';
-
-			$(function(){
-			
-				$("#showMenu").click(function(){
-                
-                    console.log("ShowMenu Clicked");
-                    
-					$("#menu")
-						.show()
-						.addClass('animated slideInRight')
-						.one(ANIMATION_END, function(){
-							$("#menu").removeClass('animated slideInRight');
-						});
-				});
-			
-				$("#hideMenu").click(function(){
-					$("#menu")
-						.addClass('animated slideOutRight')
-						.one(ANIMATION_END,function(){
-							$("#menu")
-								.hide()
-								.removeClass('animated slideOutRight');
-						});
-				});
-				
-				$(".calendarEntry").click(function(){
-					$("#overlay").show();
-					$("#info").show().addClass('animated zoomIn')
-						.one(ANIMATION_END, function(){
-							$("#info").removeClass('animated zoomIn');
-						});
-					
-				});
-				
-				$("#closeInfo").click(function(){
-					$("#overlay").hide();
-					$("#info").addClass('animated fadeOut')
-						.one(ANIMATION_END, function(){
-							$("#info").hide().removeClass('animated fadeOut');
-						});
-				});
-			
-			});
-		})();*/
-	</script>
 
 </head>
 <body>
-    <div ng-app="app" ng-controller="Calendar as vm">
+    <div ng-app="app" ng-controller="CalendarController as vm">
         <calendar></calendar>
     </div>
 
