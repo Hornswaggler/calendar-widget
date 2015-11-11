@@ -18,7 +18,7 @@
         
         //TODO: Do we really need methods for these things? can't we just hook them up to the const values here?
         vm.daysOfWeek = CONST.DAYS_OF_WEEK;
-        vm.getMonth = getMonth;
+        //vm.getMonth = getMonth;
         
         vm.calendar = new calendarService();
 
