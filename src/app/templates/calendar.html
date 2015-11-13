@@ -13,8 +13,8 @@
 </div>
 <div ng-repeat="eachDay in vm.daysOfWeek" class="calendarHeader">{{eachDay}}</div>
 
-<div ng-repeat="eachDay in vm.calendar.calendarDays" class="calendarDay">
-    {{eachDay.day}}
+<div ng-repeat="eachDay in vm.calendar.calendarDays.array" class="calendarDay">
+    {{eachDay.date.getDate()}}
     
     <event day="eachDay"></event>
 

@@ -63,17 +63,24 @@ body{
 .calendarEvent{
     background-color:#505050;
     color:#FFFFFF;
-    position:relative; 
-    height:25px;
     overflow: hidden;
-    
     text-align:center;
-    padding-top:3px;
     -webkit-box-sizing: border-box; /* Safari/Chrome, other WebKit */
     -moz-box-sizing: border-box;    /* Firefox, other Gecko */
     box-sizing: border-box;
     transition: all .2s ease-in-out;
     border-radius: 5px;
+}
+
+.calendarEventPlaceholder, .calendarEvent{
+    margin-bottom: 5px;
+    padding-top:3px;
+    height:25px;
+    position:relative; 
+}
+
+.calendarEventPlaceholder {
+    z-index:-100;
 }
 
 .calendarEvent:hover{

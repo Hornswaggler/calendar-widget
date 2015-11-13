@@ -5,9 +5,9 @@
         .module('app')
         .controller('CalendarController', CalendarController);
 
-    CalendarController.$inject = ['$scope', 'CONST','calendarService', 'eventService'];
+    CalendarController.$inject = ['$scope', 'CONST','calendarService'];
 
-    function CalendarController($scope, CONST, calendarService, eventService){ 
+    function CalendarController($scope, CONST, calendarService){ 
         var vm = this;
 
         vm.showMenu=false;
@@ -34,13 +34,15 @@
         //Will probably have to seperate "CURRENT_DATE" from the concept of what
         //Is currently being displayed on the screen
         function goNext(){
-            vm.currentDate.setMonth(vm.currentDate.getMonth()+1);
-            refresh();
+            var newDate = new Date(vm.calendar.currentDate);
+            newDate.setMonth(newDate.getMonth()+1);
+            vm.calendar.setDate(newDate);
         }
         
         function goPrevious(){
-            vm.currentDate.setMonth(vm.currentDate.getMonth()-1);
-            refresh();
+            var newDate = new Date(vm.calendar.currentDate);
+            newDate.setMonth(newDate.getMonth()-1);
+            vm.calendar.setDate(newDate);
         }
         
         function toggleMenu(){
