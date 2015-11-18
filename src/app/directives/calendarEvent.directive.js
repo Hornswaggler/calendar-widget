@@ -37,11 +37,7 @@
                         element.append('<div class="calendarEventPlaceholder">&nbsp;</div>');
                     }
                 }
-            
-                /*for(var i = 0; i < scope.day.events.length; i++){
-                    var eachEvent = scope.day.events[i];
-                    element.append('<div class="calendarEvent" style="width:96%;left:2%;margin-bottom:5px;">'+eachEvent.title+'</div>');
-                }*/
+
             });
 
         }

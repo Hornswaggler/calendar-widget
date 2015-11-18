@@ -16,38 +16,15 @@
         }
         
         calendarDay.prototype.addEvent = function(event){
-            //Get next Event Slot
-            console.log("Event Duration: ");
+            //Get the duration of this event
+            var duration = this.parentCalendar.getDayDifference(this.date, event.endDate);
             
-            //TODO: Move this into the event class (day difference method)
-            
-            var ONE_DAY = 1000 * 60 * 60 * 24;
-            
-            // Calculate the difference in milliseconds
-            var difference_ms = Math.abs(event.endDate - this.date)
-
-            // Convert back to days and return
-            var duration = Math.round(difference_ms/ONE_DAY);
-            //console.log(duration);
-
-            
-            
-            //console.log("Duration before: " + duration);
+            //Find the next available slot ensuring it doesn't overlap other events in the same row
             var nextIndex = this.getNextEventSlot(0, duration);
             
+            //Add the event and mark the slots as occupied on the same row
             this.updateEventIndex(nextIndex, event, duration, true);
-            
-            //console.log("Duration after: " + duration);
-            
-            /*var overlap = this.parentCalendar.daysPerRow - (this.index % this.parentCalendar.daysPerRow);
-            
-            //Does this event roll over into the next calendar row?
-            if(duration >= overlap){
-                console.log("Overlaps!");
-                
-            }*/
-            
-            //Does this overlap into the next week?
+
         }
         
         calendarDay.prototype.updateEventIndex = function(index, event, duration, setEvent){
@@ -55,8 +32,10 @@
             
             if(duration <= 0){
                 return;
-            }else if(overlap === this.parentCalendar.daysPerRow){
-                console.log("We're in the next week! add the event here... Something isn't working correctly, adding the event here ends up in recursive purgatory!");
+            }else if(overlap === this.parentCalendar.daysPerRow && !setEvent){
+
+                //The magic
+                this.addEvent(event);
                 
                 return;
             }
@@ -93,17 +72,9 @@
             }
 
         }
-        
-        calendarDay.prototype.occupyEventAtIndex = function(index, event, duration){
-            
-        }
-        
+
         calendarDay.prototype.getNextEventSlot = function(index, duration){
-            /*console.log("Are we at the begining of the week?");
-            console.log("Day: " + calendarDay.date);
-            console.log("Begining? " + ((calendarDay.index % calendarDay.parentCalendar.daysPerRow)==0));*/
-            
-            //First Empty Slot in this days
+            //First Empty Slot on this day
             var i = index;
             for(;i<this.eventSlots.length; i++){
                 if(this.eventSlots[i] === null || !this.eventSlots[i].occupied){
@@ -111,6 +82,7 @@
                 }
             }
             
+            //First empty slot in the rest of the row
             if((this.index % this.parentCalendar.daysPerRow)==0){
                 return i;
             }else if(this.hasNext() && duration > 0){

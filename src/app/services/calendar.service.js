@@ -73,15 +73,11 @@
                 for(var j = 0; j < this.events.length; j++){
                     var eachEvent = this.events[j];
                     
-                    //Anything w/ a start date on or before this date and end date on or after, starts here...
-                    //TODO: Should be number of columns! (not just 7...)
-                    if(i%this.daysPerRow===0 && eachEvent.startDate.getTime() <= eachDay.date.getTime()
-                            && eachEvent.endDate.getTime() >= eachDay.date.getTime()){//AND END DATE!!!!){
-                        
+                    //If an event started prior to the dates displayed on this calendar, add it for display on the first day on the calendar
+                    if(i===0 && eachEvent.startDate.getTime() <= eachDay.date.getTime()
+                            && eachEvent.endDate.getTime() >= eachDay.date.getTime()){
                         eachDay.addEvent(eachEvent);
-                    }
-                    
-                    else if(eachEvent.startDate.getMonth() === eachDay.date.getMonth() 
+                    }else if(eachEvent.startDate.getMonth() === eachDay.date.getMonth() 
                             && eachEvent.startDate.getDate() === eachDay.date.getDate()
                             && eachEvent.startDate.getUTCFullYear() === eachDay.date.getUTCFullYear()){
 
@@ -104,6 +100,14 @@
             var lastOfMonth = new Date(date.getFullYear(), date.getMonth()+1, 0);
             lastOfMonth.setDate(lastOfMonth.getDate() +  (6-lastOfMonth.getDay()));
             return lastOfMonth;
+        }
+        
+        calendar.prototype.getMsDifference = function(startDate, endDate){
+            return Math.abs(startDate - endDate);
+        }
+        
+        calendar.prototype.getDayDifference = function(startDate, endDate){
+            return Math.round(this.getMsDifference(startDate, endDate)/CONST.ONE_DAY );
         }
 
         return calendar;

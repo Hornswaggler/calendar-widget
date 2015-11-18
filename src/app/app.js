@@ -8,7 +8,10 @@
             MONTHS : ["January", "February", "March", "April", "May", "June", "July", "August", "September", "October", "November", "December"],
             
             //EVENTS
-            EVT_EVENTS_LOADED : "EVT_EVENTS_LOADED"
+            EVT_EVENTS_LOADED : "EVT_EVENTS_LOADED",
+            
+            //DATES
+            ONE_DAY : (1000 * 60 * 60 * 24)
         })
         .config(function (datepickerConfig) {
             //Configure ui-bootstrap calendar control
