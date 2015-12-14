@@ -26,19 +26,42 @@ body{
     opacity: 0;
 }
 
+.inputLabel{
+    float:left;
+    width:20%;
+}
+
+.textInput{
+    float:left;
+    width:80%;
+}
+
 .calendarDay{
+    position:relative;
     background-color:#313130;
     color:#6C6C6B;
     float:left;
     width:14.28571428571429%;
-    height: 150px;
-    margin:0px !important;
+    height: 170px;
     padding:0px !important;
     border-left:solid 1px;
     margin-left:-1px;
     border-top:solid 1px;
     margin-top:-1px;
 
+}
+
+.addCalendarEvent{
+    width:100%;
+    height:100%;
+    position:absolute;
+    transition: 1.5s ease-out;
+    opacity:0;
+}
+
+.addCalendarEvent:hover{
+    transition: .2s ease-in;
+    opacity:1;
 }
 
 .calendarHeader{
@@ -62,6 +85,7 @@ body{
 
 .calendarEvent{
     background-color:#505050;
+    z-index:50;
     color:#FFFFFF;
     overflow: hidden;
     text-align:center;
@@ -84,13 +108,19 @@ body{
 }
 
 .calendarEvent:hover{
+    background-color:#8c8c8c;
     transform: scale(1.1);
     cursor:pointer;
 }
 
 .glyphicon-button:hover{
-    color:red !important;
+    color:#ffffff !important;
+    transform: scale(1.25);
     cursor:pointer !important;
+}
+
+.glyphicon-button{
+    transition: all .2s ease-in-out;
 }
 
 .overlay{
@@ -99,6 +129,6 @@ body{
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 10;
+    z-index: 50;
     background-color: rgba(0,0,0,0.5); /*dim the background*/
 }

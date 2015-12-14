@@ -7,7 +7,7 @@
 
     function calendarDayService(){
         
-        var calendarDay = function(/*calendar, previousSibling, nextSibling,*/ date){
+        var calendarDay = function(date){
             this.date = new Date(date);
             this.next = null;
             this.index;
@@ -34,7 +34,7 @@
                 return;
             }else if(overlap === this.parentCalendar.daysPerRow && !setEvent){
 
-                //The magic
+                //The magic (Adds an event to the begining of the next row)
                 this.addEvent(event);
                 
                 return;

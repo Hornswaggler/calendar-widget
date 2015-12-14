@@ -19,6 +19,8 @@
         vm.daysOfWeek = CONST.DAYS_OF_WEEK;
 
         vm.calendar = new calendarService();
+        
+        vm.selectedEvent = null;
 
         activate();
         

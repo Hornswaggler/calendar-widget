@@ -1,25 +1,37 @@
-<div id="menu" class="menu"  ng-show="vm.showMenu">
-    <span ng-click="vm.toggleMenu()" style="margin:5px;float:left;position:relative;color:white;" class="glyphicon glyphicon-remove glyphicon-button"></span>
-    <div style=",color:#ffffff;margin-top:25px;">
-        <datepicker ng-model="dt" datepicker-options="dateOptions" ></datepicker>
+<div style="overflow:hidden;">
+    <div id="menu" class="menu"  ng-show="vm.showMenu">
+        <span ng-click="vm.toggleMenu()" style="margin:5px;float:left;position:relative;color:white;" class="glyphicon glyphicon-remove glyphicon-button"></span>
+        <div style=",color:#ffffff;margin-top:25px;">
+            <datepicker ng-model="dt" datepicker-options="dateOptions" ></datepicker>
+        </div>
+    </div>
+
+    <div style="width:100%;margin-top:5px;">&nbsp;
+        <span ng-click="vm.goNext()" style="float:right;color:white;margin-right:10px;" class="glyphicon glyphicon-menu-right glyphicon-button"></span>
+        <span ng-click="vm.goPrevious()" style="float:right;color:white;" class="glyphicon glyphicon-menu-left glyphicon-button"></span>
+        <span style="float:right;color:white;margin-right:10px;">{{vm.calendar.currentMonth()}} {{vm.calendar.currentDate.getFullYear()}}</span>
+        <span ng-click="vm.toggleMenu()" style="float:left;left:10px;color:white;" class="glyphicon glyphicon-menu-hamburger glyphicon-button"></span>
+    </div>
+
+    <event-editor></event-editor>
+
+    <div ng-repeat="eachDay in vm.daysOfWeek" class="calendarHeader">{{eachDay}}</div>
+
+    <div ng-repeat="eachDay in vm.calendar.calendarDays.array" class="calendarDay">
+        {{eachDay.date.getDate()}}
+        
+        <div  class="addCalendarEvent">&nbsp; 
+            <div style="position:absolute;top:125px;left:5px;">
+                <span  class='glyphicon glyphicon-plus glyphicon-button'></span>
+            </div>
+        </div>
+        
+        <event day="eachDay"></event>
+
+
+
     </div>
 </div>
-
-<div style="width:100%;margin-top:5px;">&nbsp;
-    <span ng-click="vm.goNext()" style="float:right;color:white;margin-right:10px;" class="glyphicon glyphicon-menu-right glyphicon-button"></span>
-    <span ng-click="vm.goPrevious()" style="float:right;color:white;" class="glyphicon glyphicon-menu-left glyphicon-button"></span>
-    <span style="float:right;color:white;margin-right:10px;">{{vm.calendar.currentMonth()}} {{vm.calendar.currentDate.getFullYear()}}</span>
-    <span ng-click="vm.toggleMenu()" style="float:left;left:10px;color:white;" class="glyphicon glyphicon-menu-hamburger glyphicon-button"></span>
-</div>
-<div ng-repeat="eachDay in vm.daysOfWeek" class="calendarHeader">{{eachDay}}</div>
-
-<div ng-repeat="eachDay in vm.calendar.calendarDays.array" class="calendarDay">
-    {{eachDay.date.getDate()}}
-    
-    <event day="eachDay"></event>
-
-</div>
-
 
     
     

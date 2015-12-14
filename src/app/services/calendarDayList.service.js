@@ -35,10 +35,6 @@
                 this.tail = this.tail.setNext(calendarDay)
             }
             
-            console.log("Are we at the begining of the row?");
-            console.log("Day: " + calendarDay.date);
-            console.log("Begining? " + ((calendarDay.index % calendarDay.parentCalendar.daysPerRow)==0));
-            console.log(calendarDay.date.getDay()===0);
         }
 
         return calendarDayList;
