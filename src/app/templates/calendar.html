@@ -17,18 +17,16 @@
 
     <div ng-repeat="eachDay in vm.daysOfWeek" class="calendarHeader">{{eachDay}}</div>
 
-    <div ng-repeat="eachDay in vm.calendar.calendarDays.array" class="calendarDay">
+    <div ng-repeat="eachDay in vm.calendar.calendarDays.array" class="calendarDay" ng-style="{height: eachDay.cellHeight() + 'px'}">
         {{eachDay.date.getDate()}}
         
+        <event day="eachDay"></event>
+        
         <div  class="addCalendarEvent">&nbsp; 
-            <div style="position:absolute;top:125px;left:5px;">
-                <span  class='glyphicon glyphicon-plus glyphicon-button'></span>
+            <div style="position:absolute;z-index:100;left:5px; bottom:5px;">
+                    <span  class='glyphicon glyphicon-plus glyphicon-button'></span>
             </div>
         </div>
-        
-        <event day="eachDay"></event>
-
-
 
     </div>
 </div>

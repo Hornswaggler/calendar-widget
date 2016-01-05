@@ -13,6 +13,8 @@
             this.currentDate = new Date();
             this.calendarDays = new calendarDayListService(this);
             
+            this.currentExpandedCell = null;
+            
             this.daysPerRow = 7;
             
             this.events = [];

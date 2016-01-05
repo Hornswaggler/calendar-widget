@@ -32,7 +32,8 @@
                 this.head = calendarDay;
                 this.tail = calendarDay;
             }else{
-                this.tail = this.tail.setNext(calendarDay)
+                calendarDay.setPrevious(this.tail);
+                this.tail = this.tail.setNext(calendarDay);
             }
             
         }

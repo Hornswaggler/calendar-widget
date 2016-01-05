@@ -9,9 +9,14 @@
             
             //EVENTS
             EVT_EVENTS_LOADED : "EVT_EVENTS_LOADED",
+            EVT_EVENTS_UPDATED : "EVT_EVENTS_UPDATED",
             
             //DATES
-            ONE_DAY : (1000 * 60 * 60 * 24)
+            ONE_DAY : (1000 * 60 * 60 * 24),
+            
+            //MISC
+            DEFAULT_CELL_HEIGHT : 170,
+            DEFAULT_VISIBLE_EVENTS : 4
         })
         .config(function (datepickerConfig) {
             //Configure ui-bootstrap calendar control
